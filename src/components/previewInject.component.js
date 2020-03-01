@@ -7,14 +7,12 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { files } from '../fixtures/files';
 import { makeStyles } from '@material-ui/core';
-
-const fileOne = files[0];
 
 const useStyles = makeStyles({
   paper: {
     overflow: 'auto',
+    padding: '30px',
   },
   line: {
     height: '18px',
@@ -41,18 +39,35 @@ const Line = ({ text, n }) => {
   );
 };
 
-export const FileView = () => {
+const getPreviewFile = ({ destinationFile, after, template, before } = {}) => [
+  '---',
+  `to: ${destinationFile}`,
+  'isInject: true',
+  `after: ${after}`,
+  `before: ${before}`,
+  '---',
+  template,
+];
+
+export const InjectFileView = props => {
   const classes = useStyles();
 
+  const onClick = e => {
+    e.preventDefault();
+
+    fetch('api/files/react-course')
+      .then(res => console.log(res.json()))
+      .catch(err => console.log(err));
+  };
   return (
     <Paper className={classes.paper}>
       <List>
-        {fileOne.map((line, index) => (
+        {getPreviewFile(props).map((line, index) => (
           <Line key={`line-${index}`} n={index + 1} text={`${line}`} />
         ))}
       </List>
-      <Button variant="contained" color="primary">
-        Hello World
+      <Button onClick={onClick} variant="contained" color="primary">
+        Generate template
       </Button>
     </Paper>
   );
