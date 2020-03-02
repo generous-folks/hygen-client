@@ -1,7 +1,12 @@
-/* eslint-disable no-unused-vars */
 const glob = require('glob');
+const _ = require('lodash');
 
-// const project = process.argv[2];
+const getLastString = string => {
+  const strArray = string.split('/');
+  const lastString = strArray[strArray.length - 1];
+
+  return lastString;
+};
 
 const getTreeView = async (project, res) =>
   glob(
@@ -11,6 +16,8 @@ const getTreeView = async (project, res) =>
       ignore: ['node_modules', '**/.git/**', '**/yarn.lock', '**/.yarnrc', '**/package.json'],
     },
     (error, files) => {
+      console.log(`Reading ${project} files...`);
+
       if (error) {
         console.error(error);
         process.exit(1);
@@ -18,9 +25,15 @@ const getTreeView = async (project, res) =>
 
       const treeStructure = files.map(file => file.replace('projects/', ''));
 
-      // console.log(treeStructure);
+      const buildTree = filess =>
+        filess.reduce(
+          (acc, curr) => ({
+            ..._.set(acc, curr.split('/'), getLastString(curr)),
+          }),
+          {},
+        );
 
-      return res.json(treeStructure);
+      return res.json(buildTree(treeStructure));
     },
   );
 

@@ -52,13 +52,6 @@ const getPreviewFile = ({ destinationFile, after, template, before } = {}) => [
 export const InjectFileView = props => {
   const classes = useStyles();
 
-  const onClick = e => {
-    e.preventDefault();
-
-    fetch('api/files/react-course')
-      .then(res => console.log(res.json()))
-      .catch(err => console.log(err));
-  };
   return (
     <Paper className={classes.paper}>
       <List>
@@ -66,7 +59,7 @@ export const InjectFileView = props => {
           <Line key={`line-${index}`} n={index + 1} text={`${line}`} />
         ))}
       </List>
-      <Button onClick={onClick} variant="contained" color="primary">
+      <Button variant="contained" color="primary">
         Generate template
       </Button>
     </Paper>

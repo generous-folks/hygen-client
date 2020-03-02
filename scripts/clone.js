@@ -1,13 +1,20 @@
-/* eslint-disable no-unused-vars */
-const { execSync } = require('child_process');
-const fs = require('fs');
+const { exec } = require('child_process');
+const util = require('util');
 
-const run = () => {
+const clone = util.promisify(exec);
+
+const gitClone = async (gitRepository, res) => {
   console.log('cloning repository...');
 
-  execSync('cd projects && git clone https://github.com/generous-folks/react-course.git && cd ..', {
-    encoding: 'utf8',
-  });
+  try {
+    await clone(`cd projects && git clone ${gitRepository} && cd ..`, {
+      encoding: 'utf8',
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+
+  res.status(200).send();
 };
 
-run();
+module.exports = { gitClone };

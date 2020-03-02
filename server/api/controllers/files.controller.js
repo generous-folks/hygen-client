@@ -1,10 +1,21 @@
 // const Booking = require("../models/files");
 const { getTreeView } = require('../../../scripts/getTree');
+const { gitClone } = require('../../../scripts/clone');
 
 class FileController {
   static async getFiles(req, res) {
     await getTreeView(req.params.project, res);
   }
+
+  static async cloneRepository(req, res) {
+    const repositoryUrl = req.body.url;
+    if (!repositoryUrl) {
+      res.status(500).send();
+    }
+
+    await gitClone(repositoryUrl, res);
+  }
+
   // static getBookings(req, res) {
   //   Booking.find()
   //     .sort("date")

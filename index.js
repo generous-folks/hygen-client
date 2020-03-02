@@ -6,10 +6,10 @@ const bodyParser = require('body-parser');
 //Express App setup
 const app = express();
 app.use(cors({ origin: true }));
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 5000);
 
 // Expose api routes
 app.use('/api', FilesRouter);

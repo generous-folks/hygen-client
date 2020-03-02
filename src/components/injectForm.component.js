@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import { useInputGroup } from '../hooks/useInputs.hook';
 
 const useStyles = makeStyles({
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-const injectInputs = ['destinationFile', 'after', 'before', 'skip_if', 'template'];
+const injectInputs = ['to', 'after', 'before', 'skip_if', 'template'];
 
 export const InjectForm = ({ setInjectForm }) => {
   const classes = useStyles();
@@ -47,7 +47,7 @@ export const InjectForm = ({ setInjectForm }) => {
         Inject Form
       </Typography>
       <form>
-        <Grid container>
+        <Grid spacing={4} container>
           {injectInputs.map(injectInput => (
             <Grid key={injectInput} item md={injectInput === 'template' ? 12 : 6} sm={6}>
               <TextField

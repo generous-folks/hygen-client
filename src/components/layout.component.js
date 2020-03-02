@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, makeStyles } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import makeStyles from '@material-ui/styles/makeStyles';
 
 const useStyles = makeStyles({
   spacing: {
@@ -11,5 +12,9 @@ const useStyles = makeStyles({
 export const Layout = ({ children }) => {
   const classes = useStyles();
 
-  return <Container className={classes.spacing}>{children}</Container>;
+  return (
+    <Container maxWidth="xl" className={classes.spacing}>
+      {children}
+    </Container>
+  );
 };

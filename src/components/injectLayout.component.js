@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 import { InjectForm } from './injectForm.component';
-import { InjectFileView } from './previewInject.component';
+import { InjectFileView } from './injectFileView.component';
 
-export const FullInject = () => {
+export const InjectLayout = () => {
   const [injectForm, setInjectForm] = useState({});
 
   return (

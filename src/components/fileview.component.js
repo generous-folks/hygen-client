@@ -1,16 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { files } from '../fixtures/files';
-import { makeStyles } from '@material-ui/core';
-
-const fileOne = files[0];
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({
   paper: {
@@ -41,19 +37,16 @@ const Line = ({ text, n }) => {
   );
 };
 
-export const FileView = () => {
+export const FileView = ({ file }) => {
   const classes = useStyles();
 
   return (
     <Paper className={classes.paper}>
       <List>
-        {fileOne.map((line, index) => (
+        {file.map((line, index) => (
           <Line key={`line-${index}`} n={index + 1} text={`${line}`} />
         ))}
       </List>
-      <Button variant="contained" color="primary">
-        Hello World
-      </Button>
     </Paper>
   );
 };
