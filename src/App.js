@@ -1,29 +1,24 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 
-import { Layout } from './components/layout.component';
-import { FileView } from './components/fileview.component';
-import { InjectLayout } from './components/injectLayout.component';
+import { InjectProvider } from './modules/inject/inject.context';
 
-import { files } from './fixtures/files';
-import { SimpleDialogDemo } from './components/modal.component';
+import { HomePage } from './pages/home.page';
+import { InjectPage } from './pages/inject.page';
 
-const fileOne = files[0];
-
-function App() {
+export default function App() {
   return (
-    <Layout>
-      <SimpleDialogDemo />
-      <Grid container justify="space-around">
-        <Grid item md={6}>
-          <FileView file={fileOne} />
-        </Grid>
-        <Grid item md={5}>
-          <InjectLayout />
-        </Grid>
-      </Grid>
-    </Layout>
+    <Router>
+      <Switch>
+        <Route path="/inject/:id">
+          <InjectProvider>
+            <InjectPage />
+          </InjectProvider>
+        </Route>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
-
-export default App;

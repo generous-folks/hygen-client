@@ -1,6 +1,7 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import makeStyles from '@material-ui/styles/makeStyles';
+import { DrawerComponent } from './drawer.component';
 
 const useStyles = makeStyles({
   spacing: {
@@ -14,7 +15,7 @@ export const Layout = ({ children }) => {
 
   return (
     <Container maxWidth="xl" className={classes.spacing}>
-      {children}
+      <DrawerComponent>{children}</DrawerComponent>
     </Container>
   );
 };

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 
 import Dialog from '@material-ui/core/Dialog';
-import { FileSystemNavigator } from './tree.component';
+import { TreeViewComponent } from './treeView.component';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -35,7 +35,7 @@ function SimpleDialog(props) {
       onClose={handleClose}
       open={open}
     >
-      <FileSystemNavigator />
+      <TreeViewComponent />
     </Dialog>
   );
 }
@@ -46,7 +46,7 @@ SimpleDialog.propTypes = {
   selectedValue: PropTypes.string.isRequired,
 };
 
-export function SimpleDialogDemo() {
+export function TreeViewModal() {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {

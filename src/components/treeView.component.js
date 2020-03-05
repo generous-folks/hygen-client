@@ -4,6 +4,7 @@ import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
+import shortid from 'shortid';
 
 const useStyles = makeStyles({
   root: {
@@ -13,26 +14,24 @@ const useStyles = makeStyles({
   },
 });
 
-const renderTreeItem = (items, innerCount) => {
-  let count = innerCount !== undefined ? innerCount : 0;
+const renderTreeItem = items => {
   const result = Object.keys(items).map(itemKey => {
     setTimeout(() => {});
-    count = count + 1;
     if (typeof items[itemKey] === 'object') {
       return (
-        <TreeItem key={itemKey} nodeId={count.toString()} label={itemKey}>
-          {renderTreeItem(items[itemKey], count)}
+        <TreeItem key={itemKey} nodeId={shortid.generate()} label={itemKey}>
+          {renderTreeItem(items[itemKey])}
         </TreeItem>
       );
     }
 
-    return <TreeItem key={itemKey} nodeId={count.toString()} label={itemKey} />;
+    return <TreeItem key={itemKey} nodeId={shortid.generate()} label={itemKey} />;
   });
 
   return result;
 };
 
-export function FileSystemNavigator() {
+export const TreeViewComponent = () => {
   const classes = useStyles();
 
   const [files, setFiles] = React.useState([]);
@@ -55,4 +54,4 @@ export function FileSystemNavigator() {
       {renderTreeItem(files)}
     </TreeView>
   );
-}
+};
