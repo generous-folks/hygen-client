@@ -5,6 +5,9 @@ const FileRouter = new Router();
 // Clone given repository into projects folder
 FileRouter.route('/files/clone').post(FileController.cloneRepository);
 
+// Get given file
+FileRouter.route('/files/get').post(FileController.getFile);
+
 // Get all files for a given project
 FileRouter.route('/files/:project').get(FileController.getFiles);
 

@@ -5,6 +5,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 import shortid from 'shortid';
+import _ from 'lodash';
 
 const useStyles = makeStyles({
   root: {
@@ -16,16 +17,31 @@ const useStyles = makeStyles({
 
 const renderTreeItem = items => {
   const result = Object.keys(items).map(itemKey => {
-    setTimeout(() => {});
-    if (typeof items[itemKey] === 'object') {
+    setTimeout(_.noop);
+    const uniqueKey = shortid.generate();
+
+    if (itemKey === 'label' || itemKey === 'path') {
+      return <React.Fragment key={uniqueKey}></React.Fragment>;
+    }
+
+    const label = _.get(items, `${itemKey}.label`, null);
+
+    if (typeof items[label] === 'object') {
       return (
-        <TreeItem key={itemKey} nodeId={shortid.generate()} label={itemKey}>
-          {renderTreeItem(items[itemKey])}
+        <TreeItem key={uniqueKey} nodeId={uniqueKey} label={label}>
+          {renderTreeItem(items[label])}
         </TreeItem>
       );
     }
 
-    return <TreeItem key={itemKey} nodeId={shortid.generate()} label={itemKey} />;
+    return (
+      <TreeItem
+        onClick={() => console.log(items.path + '/' + itemKey)}
+        key={uniqueKey}
+        nodeId={uniqueKey}
+        label={itemKey}
+      />
+    );
   });
 
   return result;

@@ -25,15 +25,13 @@ const getTreeView = async (project, res) =>
 
       const treeStructure = files.map(file => file.replace('projects/', ''));
 
-      const buildTree = filess =>
-        filess.reduce(
-          (acc, curr) => ({
-            ..._.set(acc, curr.split('/'), getLastString(curr)),
-          }),
+      const buildPaths = allFiles =>
+        allFiles.reduce(
+          (acc, curr) => _.set(acc, curr.split('/'), { path: curr, label: getLastString(curr) }),
           {},
         );
 
-      return res.json(buildTree(treeStructure));
+      return res.json(buildPaths(treeStructure));
     },
   );
 

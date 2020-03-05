@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
@@ -8,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
 import { makeStyles } from '@material-ui/styles';
-import { useInputGroup } from '../hooks/useInputs.hook';
+import { useInputGroup } from '../../../hooks/useInputs.hook';
 
 const useStyles = makeStyles({
   paper: {

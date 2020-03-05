@@ -1,10 +1,25 @@
 // const Booking = require("../models/files");
 const { getTreeView } = require('../../../scripts/getTree');
+const { getFile } = require('../../../scripts/getFile');
 const { gitClone } = require('../../../scripts/clone');
 
 class FileController {
   static async getFiles(req, res) {
-    await getTreeView(req.params.project, res);
+    const project = req.params.project;
+    if (!project) {
+      res.status(500).send();
+    }
+
+    await getTreeView(project, res);
+  }
+
+  static async getFile(req, res) {
+    const path = req.body.path;
+    if (!path) {
+      res.status(500).send();
+    }
+
+    await getFile(path, res);
   }
 
   static async cloneRepository(req, res) {

@@ -15,6 +15,22 @@ export const cloneRequest = url => {
     .catch(err => console.log(err));
 };
 
+export const getFileRequest = (path, setter) => {
+  // Clone repository fetch
+
+  return fetch('api/files/get', {
+    method: 'POST',
+    body: JSON.stringify({ path }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(res => res.json())
+    .then(setter)
+    .catch(err => console.log(err));
+};
+
 export const getTreeRequest = (projectName, setter) => {
   return fetch('http://localhost:5000/api/files/' + projectName)
     .then(res => res.json())

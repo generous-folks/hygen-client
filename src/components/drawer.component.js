@@ -54,9 +54,12 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
+  drawerCategory: {
+    padding: '1em',
+  },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    //padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -125,7 +128,11 @@ export const DrawerComponent = ({ children }) => {
           </IconButton>
         </div>
         <Divider />
+        <Typography color="primary" component="h6" variant="h6" className={classes.drawerCategory}>
+          Project
+        </Typography>
         <TreeViewComponent />
+        <Divider />
       </Drawer>
       <main
         className={clsx(classes.content, {

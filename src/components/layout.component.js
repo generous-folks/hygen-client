@@ -9,7 +9,6 @@ const useStyles = makeStyles({
   },
 });
 
-// eslint-disable-next-line react/prop-types
 export const Layout = ({ children }) => {
   const classes = useStyles();
 

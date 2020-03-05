@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 
 import Paper from '@material-ui/core/Paper';
@@ -8,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
+import { getFileRequest } from '../utils/requests.utils';
 
 const useStyles = makeStyles({
   paper: {
@@ -21,13 +21,13 @@ const useStyles = makeStyles({
       background: 'yellow',
       cursor: 'pointer',
     },
-    // '& .hover-selector-fileview': {
-    //   display: 'block',
-    //   position: 'absolute',
-    //   top: '20px',
-    //   left: '25px',
-    //   zIndex: 1,
-    // },
+    '& .controls-fileview': {
+      display: 'block',
+      position: 'absolute',
+      top: '20px',
+      left: '25px',
+      zIndex: 1,
+    },
   },
   lineText: {
     whiteSpace: 'pre',
@@ -48,7 +48,7 @@ const Line = ({ text, n }) => {
       <span className={classes.lineNumber}>{n}</span>
       <ListItemText className={classes.lineText} primary={text} />
       {hasButtons && (
-        <div className="hover-selector-fileview">
+        <div className="controls-fileview">
           <Button variant="contained" color="primary">
             Before
           </Button>
@@ -61,8 +61,21 @@ const Line = ({ text, n }) => {
   );
 };
 
-export const FileView = ({ file }) => {
+export const FileView = ({ file, path }) => {
   const classes = useStyles();
+
+  const [filee, setFilee] = React.useState(null);
+
+  React.useEffect(() => {
+    console.log(file);
+    if (!filee) {
+      getFileRequest(path, setFilee);
+      // fetch('http://localhost:5000/api/files/get')
+      //   .then(res => res.json())
+      //   .then(setFiles)
+      //   .catch(err => console.log(err));
+    }
+  }, [filee]);
 
   return (
     <Paper className={classes.paper}>

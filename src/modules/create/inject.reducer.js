@@ -1,14 +1,13 @@
-import { SET_PATH, RECEIVED_ARTICLES } from './inject.actions';
+import { REQUEST_ARTICLES, RECEIVED_ARTICLES } from './inject.actions';
 
 export const initialState = {
   inject: [],
-  path: null,
 };
 
 export const injectReducer = (state, action) => {
   switch (action.type) {
-    case SET_PATH: {
-      return { ...state, path: action.path };
+    case REQUEST_ARTICLES: {
+      return state;
     }
     case RECEIVED_ARTICLES: {
       return { ...state, inject: [...state.inject, ...action.inject] };
