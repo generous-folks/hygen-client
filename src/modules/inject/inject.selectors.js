@@ -1,10 +1,5 @@
-import { useArticles } from './articles.context';
-import { requestArticles } from './articles.actions';
+import { useInjectState } from './inject.context';
 import { useSelector } from '../../utils/context.utils';
 
-export const useArticlesSelector = () =>
-  useSelector(useArticles, ({ articles }) => articles, {
-    shouldFetch: true,
-    fetchCondition: articles => articles.length === 0,
-    fetchAction: requestArticles,
-  });
+export const useInjectPathSelector = () => useSelector(useInjectState, ({ path }) => path);
+export const useInjectFormSelector = () => useSelector(useInjectState, ({ form }) => form);

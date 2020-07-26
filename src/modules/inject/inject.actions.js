@@ -1,4 +1,3 @@
 export const SET_PATH = 'inject/SET_PATH';
-export const RECEIVED_ARTICLES = 'articles/RECEIVED_ARTICLES';
-
-export const setPath = path => ({ type: SET_PATH, path });
+export const SET_INJECT_FORM = 'inject/SET_INJECT_FORM';
+export const SET_INJECT_FORM_FIELD = 'inject/SET_INJECT_FORM_FIELD';

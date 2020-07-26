@@ -16,9 +16,9 @@ export const cloneRequest = url => {
 };
 
 export const getFileRequest = (path, setter) => {
-  // Clone repository fetch
+  // Get single project file from path
 
-  return fetch('api/files/get', {
+  return fetch('http://localhost:5000/api/files/get', {
     method: 'POST',
     body: JSON.stringify({ path }),
     headers: {

@@ -7,15 +7,17 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import shortid from 'shortid';
 import _ from 'lodash';
 
+import { EMPTY_ARRAY } from '../../../constants/emptyPrimitives.constants';
+import { SET_PATH } from '../../inject/inject.actions';
+
 const useStyles = makeStyles({
   root: {
     padding: '2em',
-    flexGrow: 1,
     maxWidth: 400,
   },
 });
 
-const renderTreeItem = items => {
+const renderTreeItem = (items, setPath) => {
   const result = Object.keys(items).map(itemKey => {
     setTimeout(_.noop);
     const uniqueKey = shortid.generate();
@@ -29,14 +31,14 @@ const renderTreeItem = items => {
     if (typeof items[label] === 'object') {
       return (
         <TreeItem key={uniqueKey} nodeId={uniqueKey} label={label}>
-          {renderTreeItem(items[label])}
+          {renderTreeItem(items[label], setPath)}
         </TreeItem>
       );
     }
 
     return (
       <TreeItem
-        onClick={() => console.log(items.path + '/' + itemKey)}
+        onClick={() => setPath(items.path + '/' + itemKey)}
         key={uniqueKey}
         nodeId={uniqueKey}
         label={itemKey}
@@ -47,10 +49,12 @@ const renderTreeItem = items => {
   return result;
 };
 
-export const TreeViewComponent = () => {
+export const TreeViewComponent = ({ dispatch }) => {
   const classes = useStyles();
 
-  const [files, setFiles] = React.useState([]);
+  const [files, setFiles] = React.useState(EMPTY_ARRAY);
+
+  const dispatchSetPath = path => dispatch({ type: SET_PATH, path });
 
   React.useEffect(() => {
     if (files.length === 0) {
@@ -67,7 +71,7 @@ export const TreeViewComponent = () => {
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
     >
-      {renderTreeItem(files)}
+      {renderTreeItem(files, dispatchSetPath)}
     </TreeView>
   );
 };

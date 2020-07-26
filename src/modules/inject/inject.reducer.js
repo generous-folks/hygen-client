@@ -1,8 +1,8 @@
-import { SET_PATH, RECEIVED_ARTICLES } from './inject.actions';
+import { SET_PATH, SET_INJECT_FORM_FIELD, SET_INJECT_FORM } from './inject.actions';
 
 export const initialState = {
-  inject: [],
   path: null,
+  form: {},
 };
 
 export const injectReducer = (state, action) => {
@@ -10,9 +10,15 @@ export const injectReducer = (state, action) => {
     case SET_PATH: {
       return { ...state, path: action.path };
     }
-    case RECEIVED_ARTICLES: {
-      return { ...state, inject: [...state.inject, ...action.inject] };
+
+    case SET_INJECT_FORM: {
+      return { ...state, form: action.form };
     }
+
+    case SET_INJECT_FORM_FIELD: {
+      return { ...state, form: { ...state.form, ...action.field } };
+    }
+
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }

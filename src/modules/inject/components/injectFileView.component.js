@@ -6,7 +6,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { EMPTY_OBJECT, EMPTY_STRING } from '../../../constants/emptyPrimitives.constants';
 
 const useStyles = makeStyles({
   paper: {
@@ -21,31 +22,33 @@ const useStyles = makeStyles({
     whiteSpace: 'pre',
   },
   lineNumber: {
-    width: '20px',
+    width: '30px',
     marginRight: '5px',
+    padding: '0 12px',
     background: 'lightgrey',
     userSelect: 'none',
   },
 });
 
-const Line = ({ text, n }) => {
+const Line = ({ text, lineIndex }) => {
   const classes = useStyles();
   return (
     <ListItem className={classes.line}>
-      <span className={classes.lineNumber}>{n}</span>
+      <span className={classes.lineNumber}>{lineIndex}</span>
       <ListItemText className={classes.lineText} primary={text} />
     </ListItem>
   );
 };
 
-const getPreviewFile = ({ to, after, template, before } = {}) => [
+const getPreviewFile = ({ to, after, template, skip_if, before } = EMPTY_OBJECT) => [
   '---',
-  `to: ${to}`,
+  `to: ${to || null}`,
   'isInject: true',
-  `after: ${after}`,
-  `before: ${before}`,
+  `skip_if: ${skip_if || null}`,
+  `after: ${after || null}`,
+  `before: ${before || null}`,
   '---',
-  template,
+  template || EMPTY_STRING,
 ];
 
 export const InjectFileView = props => {
@@ -55,7 +58,7 @@ export const InjectFileView = props => {
     <Paper className={classes.paper}>
       <List>
         {getPreviewFile(props).map((line, index) => (
-          <Line key={`line-${index}`} n={index + 1} text={`${line}`} />
+          <Line key={`line-${index}`} lineIndex={index + 1} text={`${line}`} />
         ))}
       </List>
       <Button variant="contained" color="primary">

@@ -9,12 +9,12 @@ const useStyles = makeStyles({
   },
 });
 
-export const Layout = ({ children }) => {
+export const Layout = ({ children, dispatch }) => {
   const classes = useStyles();
 
   return (
     <Container maxWidth="xl" className={classes.spacing}>
-      <DrawerComponent>{children}</DrawerComponent>
+      <DrawerComponent dispatch={dispatch}>{children}</DrawerComponent>
     </Container>
   );
 };

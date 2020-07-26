@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,7 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-import { TreeViewComponent } from './treeView.component';
+import { TreeViewComponent } from '../modules/repository/components/treeView.component';
 
 const drawerWidth = 240;
 
@@ -76,7 +77,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // eslint-disable-next-line react/prop-types
-export const DrawerComponent = ({ children }) => {
+export const DrawerComponent = ({ children, dispatch }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -131,7 +132,7 @@ export const DrawerComponent = ({ children }) => {
         <Typography color="primary" component="h6" variant="h6" className={classes.drawerCategory}>
           Project
         </Typography>
-        <TreeViewComponent />
+        <TreeViewComponent dispatch={dispatch} />
         <Divider />
       </Drawer>
       <main

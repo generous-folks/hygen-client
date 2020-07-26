@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
@@ -8,10 +8,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 import { getFileRequest } from '../utils/requests.utils';
+import { EMPTY_ARRAY } from '../constants/emptyPrimitives.constants';
+import { SET_INJECT_FORM_FIELD } from '../modules/inject/inject.actions';
 
 const useStyles = makeStyles({
   paper: {
     overflow: 'auto',
+    minHeight: '200px',
   },
   line: {
     position: 'relative',
@@ -31,28 +34,48 @@ const useStyles = makeStyles({
   },
   lineText: {
     whiteSpace: 'pre',
+    maxWidth: '400px',
   },
   lineNumber: {
-    width: '20px',
+    width: '30px',
     marginRight: '5px',
+    padding: '0 12px',
     background: 'lightgrey',
     userSelect: 'none',
   },
 });
 
-const Line = ({ text, n }) => {
+const Line = ({ text, lineIndex, buttonLineIndex, setButtonLineIndex, dispatch }) => {
   const [hasButtons, setHasButtons] = React.useState(false);
   const classes = useStyles();
+
+  const setFormField = (fieldKey, fieldValue) => () =>
+    dispatch({
+      type: SET_INJECT_FORM_FIELD,
+      field: { [fieldKey]: new RegExp(fieldValue.replace(/\*/g, '\\*')) },
+    });
+
+  useEffect(() => {
+    if (lineIndex !== buttonLineIndex && hasButtons) {
+      setHasButtons(false);
+    }
+  }, [lineIndex, buttonLineIndex, hasButtons]);
+
+  const handleLineClick = () => {
+    setButtonLineIndex();
+    setHasButtons(visible => !visible);
+  };
+
   return (
-    <ListItem button onClick={() => setHasButtons(visible => !visible)} className={classes.line}>
-      <span className={classes.lineNumber}>{n}</span>
+    <ListItem button onClick={handleLineClick} className={classes.line}>
+      <span className={classes.lineNumber}>{lineIndex}</span>
       <ListItemText className={classes.lineText} primary={text} />
       {hasButtons && (
         <div className="controls-fileview">
-          <Button variant="contained" color="primary">
+          <Button onClick={setFormField('before', text)} variant="contained" color="primary">
             Before
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button onClick={setFormField('after', text)} variant="contained" color="secondary">
             After
           </Button>
         </div>
@@ -61,29 +84,34 @@ const Line = ({ text, n }) => {
   );
 };
 
-export const FileView = ({ file, path }) => {
+export const FileView = ({ path, dispatch }) => {
   const classes = useStyles();
+  const [buttonLineIndex, setButtonLineIndex] = useState(null);
 
-  const [filee, setFilee] = React.useState(null);
+  const [file, setFile] = React.useState(EMPTY_ARRAY);
 
   React.useEffect(() => {
-    console.log(file);
-    if (!filee) {
-      getFileRequest(path, setFilee);
-      // fetch('http://localhost:5000/api/files/get')
-      //   .then(res => res.json())
-      //   .then(setFiles)
-      //   .catch(err => console.log(err));
+    if (path) {
+      getFileRequest(path, setFile);
     }
-  }, [filee]);
+  }, [path, setFile]);
 
-  return (
+  return file.length > 0 ? (
     <Paper className={classes.paper}>
       <List>
         {file.map((line, index) => (
-          <Line key={`line-${index}`} n={index + 1} text={`${line}`} />
+          <Line
+            key={`line-${index}`}
+            setButtonLineIndex={() => setButtonLineIndex(index + 1)}
+            buttonLineIndex={buttonLineIndex}
+            lineIndex={index + 1}
+            text={`${line}`}
+            dispatch={dispatch}
+          />
         ))}
       </List>
     </Paper>
+  ) : (
+    <p>Please, select a file</p>
   );
 };

@@ -6,8 +6,10 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-import { makeStyles } from '@material-ui/styles';
+import makeStyles from '@material-ui/styles/makeStyles';
+
 import { useInputGroup } from '../../../hooks/useInputs.hook';
+import { EMPTY_OBJECT } from '../../../constants/emptyPrimitives.constants';
 
 const useStyles = makeStyles({
   paper: {
@@ -19,25 +21,25 @@ const useStyles = makeStyles({
   },
 });
 
-const injectInputs = ['to', 'after', 'before', 'skip_if', 'template'];
+const getInputValues = inputs =>
+  Object.keys(inputs).reduce(
+    (acc, curr) => ({
+      ...acc,
+      [curr]: inputs[curr].value,
+    }),
+    EMPTY_OBJECT,
+  );
+
+const inputKeys = ['to', 'skip_if', 'template'];
 
 export const InjectForm = ({ setInjectForm }) => {
   const classes = useStyles();
-  const [inputValues, handleInput, getInputValue] = useInputGroup(injectInputs);
+  const [inputValues, handleInput, getInputValue] = useInputGroup(inputKeys);
 
   const onSubmit = e => {
     e.preventDefault();
 
-    const formattedValues = Object.keys(inputValues).reduce(
-      (acc, curr) => ({
-        ...acc,
-        [curr]: inputValues[curr].value,
-      }),
-      {},
-    );
-
-    console.log(inputValues, formattedValues);
-    setInjectForm(formattedValues);
+    setInjectForm(getInputValues(inputValues));
   };
 
   return (
@@ -47,7 +49,7 @@ export const InjectForm = ({ setInjectForm }) => {
       </Typography>
       <form>
         <Grid spacing={4} container>
-          {injectInputs.map(injectInput => (
+          {inputKeys.map(injectInput => (
             <Grid key={injectInput} item md={injectInput === 'template' ? 12 : 6} sm={6}>
               <TextField
                 name={injectInput}

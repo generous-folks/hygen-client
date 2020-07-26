@@ -1,15 +1,16 @@
-/* eslint-disable no-unused-vars */
 const fs = require('fs');
-//   const readFiles = files.map(file => {
-//     const currentFile = fs.readFileSync(file, 'utf-8');
-//     const parsedFile = currentFile.split('\n').map(line => line.replace(' ', '\xa0')); //.join('\n');
-//     // fs.writeFileSync(file, parsedFile, 'utf-8');
-//     return parsedFile;
-//   });
 
-const getFile = async (path, res) => {
-  const file = fs.readFile(path, { encoding: 'utf-8' }, (error, data) => {
-    console.log(data);
+const getFile = (path, res) => {
+  return fs.readFile(`projects/${path}`, { encoding: 'utf-8' }, (error, data) => {
+    if (error) {
+      return res.status(500).send(error);
+    }
+
+    if (!data || !data.split) {
+      return res.status(404).send();
+    }
+
+    return res.status(200).json(data.split('\n'));
   });
 };
 

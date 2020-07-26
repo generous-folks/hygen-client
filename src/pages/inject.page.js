@@ -1,16 +1,17 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
 import { Layout } from '../components/layout.component';
 import { InjectLayout } from '../modules/inject/components/injectLayout.component';
-// import { Article } from '../modules/articles/components/article.component';
+import { useInjectPathSelector } from '../modules/inject/inject.selectors';
+import { useInjectDispatch } from '../modules/inject/inject.context';
 
 export const InjectPage = () => {
-  const { id } = useParams();
+  const dispatch = useInjectDispatch();
+  const path = useInjectPathSelector();
 
   return (
-    <Layout>
-      <h2>{id}</h2>
+    <Layout dispatch={dispatch}>
+      <h2>{path}</h2>
       <InjectLayout />
     </Layout>
   );
