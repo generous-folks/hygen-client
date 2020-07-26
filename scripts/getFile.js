@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const getFile = (path, res) => {
-  return fs.readFile(`projects/${path}`, { encoding: 'utf-8' }, (error, data) => {
+  return fs.readFile(`projects/${path}`, { encoding: 'utf-8', dot: true }, (error, data) => {
     if (error) {
       return res.status(500).send(error);
     }
