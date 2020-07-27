@@ -7,8 +7,10 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import shortid from 'shortid';
 import _ from 'lodash';
 
-import { EMPTY_ARRAY } from '../../../constants/emptyPrimitives.constants';
+// import { EMPTY_ARRAY } from '../../../constants/emptyPrimitives.constants';
 import { SET_PATH } from '../../inject/inject.actions';
+import { useRepositoryState, useRepositoryDispatch } from '../repository.context';
+import { setFiles } from '../repository.actions';
 
 const useStyles = makeStyles({
   root: {
@@ -51,19 +53,14 @@ const renderTreeItem = (items, setPath) => {
 
 export const TreeViewComponent = ({ dispatch }) => {
   const classes = useStyles();
-
-  const [files, setFiles] = React.useState(EMPTY_ARRAY);
+  const { files, repository } = useRepositoryState();
+  const repositoryDispatch = useRepositoryDispatch();
 
   const dispatchSetPath = path => dispatch({ type: SET_PATH, path });
 
   React.useEffect(() => {
-    if (files.length === 0) {
-      fetch('http://localhost:5000/api/files/react-course')
-        .then(res => res.json())
-        .then(setFiles)
-        .catch(err => console.log(err));
-    }
-  }, [files]);
+    repositoryDispatch(setFiles(files, repository));
+  }, [files, repository, repositoryDispatch]);
 
   return (
     <TreeView

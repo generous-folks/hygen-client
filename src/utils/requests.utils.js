@@ -1,17 +1,14 @@
 export const cloneRequest = url => {
   // Clone repository fetch
-  const repository = {
-    url,
-  };
-  return fetch('api/files/clone', {
+  return fetch('http://localhost:5000/api/files/clone', {
     method: 'POST',
-    body: JSON.stringify(repository),
+    body: JSON.stringify({ url }),
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
   })
-    .then(res => console.log(res.json()))
+    .then(res => console.log(res))
     .catch(err => console.log(err));
 };
 

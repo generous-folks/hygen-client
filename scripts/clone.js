@@ -6,15 +6,12 @@ const clone = util.promisify(exec);
 const gitClone = async (gitRepository, res) => {
   console.log('cloning repository...');
 
-  try {
-    await clone(`cd projects && git clone ${gitRepository} && cd ..`, {
-      encoding: 'utf8',
-    });
-  } catch (error) {
-    res.status(500).send(error);
-  }
-
-  res.status(200).send();
+  return clone(`cd projects && git clone ${gitRepository} && cd ..`, {
+    encoding: 'utf-8',
+    dot: true,
+  })
+    .then(res => res.status(200).send())
+    .catch(err => res.status(500).send(err));
 };
 
 module.exports = { gitClone };
